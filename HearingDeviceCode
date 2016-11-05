@@ -1,0 +1,551 @@
+
+const int yesButton = 8; 
+const int noButton = 10; 
+const int ledPin =  1;
+int numberOfTests = 0;
+
+float originalResultsLeft[4][7]={
+  {0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0},/*First four are left*/
+  {0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0}
+};
+
+float originalResultsRight[4][7]={
+  {0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0},/*Next four are right*/
+  {0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0}
+};
+
+float leftResultsFinal[]={0,0,0,0,0,0,0};
+float rightResultsFinal[]={0,0,0,0,0,0,0};
+
+int result125L=0;
+int result250L=0;
+int result500L=0;
+int result1000L=0;
+int result2000L=0;
+int result4000L=0;
+int result8000L=0;
+
+int result125R=0;
+int result250R=0;
+int result500R=0;
+int result1000R=0;
+int result2000R=0;
+int result4000R=0;
+int result8000R=0;
+
+#include <Audio.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <SD.h>
+
+// GUItool: begin automatically generated code
+AudioInputI2S            i2s1;           //xy=125.55555725097656,850.2222900390625
+AudioFilterBiquad        biquad2;        //xy=282.8888854980469,91.88888549804688
+AudioFilterBiquad        biquad1;        //xy=286.8888854980469,51.888885498046875
+AudioFilterBiquad        biquad20;       //xy=284.8147888183594,879.814803481102
+AudioFilterBiquad        biquad3;        //xy=288.8888854980469,137.88888549804688
+AudioFilterBiquad        biquad9;        //xy=288.2222213745117,416.99999809265137
+AudioFilterBiquad        biquad32;       //xy=285.55555725097656,1269.8413047790527
+AudioFilterBiquad        biquad33;       //xy=285.5555648803711,1302.698408126831
+AudioFilterBiquad        biquad28;       //xy=286.98411560058594,1138.7301788330078
+AudioFilterBiquad        biquad4;        //xy=290.8888854980469,186.88888549804688
+AudioFilterBiquad        biquad29;       //xy=286.98412322998047,1171.2698945999146
+AudioFilterBiquad        biquad17;       //xy=288.81483459472656,735.1482543945312
+AudioFilterBiquad        biquad21;       //xy=288.14813232421875,914.8148250579834
+AudioFilterBiquad        biquad31;       //xy=286.98411560058594,1239.8412871360779
+AudioFilterBiquad        biquad18;       //xy=289.1481170654297,768.1482543945312
+AudioFilterBiquad        biquad34;       //xy=286.98412704467773,1334.1269817352295
+AudioFilterBiquad        biquad36;       //xy=286.98413467407227,1398.4127292633057
+AudioFilterBiquad        biquad25;       //xy=288.41269356863836,1047.3015920026805
+AudioFilterBiquad        biquad37;       //xy=286.9840965270996,1432.6985130310059
+AudioFilterBiquad        biquad27;       //xy=288.4126853942871,1108.7301616668701
+AudioFilterBiquad        biquad38;       //xy=286.9841194152832,1466.9842109680176
+AudioFilterBiquad        biquad30;       //xy=288.4127006530762,1205.5555725097656
+AudioFilterBiquad        biquad22;       //xy=289.81481170654297,951.4814929962158
+AudioFilterBiquad        biquad10;       //xy=291.88887786865234,466.6666774749756
+AudioFilterBiquad        biquad35;       //xy=288.4127006530762,1365.555570602417
+AudioFilterBiquad        biquad8;        //xy=292.5555648803711,370.88891220092773
+AudioFilterBiquad        biquad26;       //xy=289.84124755859375,1078.7302494049072
+AudioFilterBiquad        biquad14;       //xy=291.8148193359375,627.4815063476562
+AudioFilterBiquad        biquad19;       //xy=291.14813232421875,802.4815063476562
+AudioFilterBiquad        biquad15;       //xy=291.8147888183594,663.8148193359375
+AudioFilterBiquad        biquad13;       //xy=292.4814758300781,590.4815063476562
+AudioFilterBiquad        biquad12;       //xy=293.2222099304199,551.6666584014893
+AudioFilterBiquad        biquad7;        //xy=294.2222099304199,329.55558681488037
+AudioFilterBiquad        biquad24;       //xy=291.48148345947266,1021.4815578460693
+AudioFilterBiquad        biquad11;       //xy=293.5555648803711,507.33332443237305
+AudioFilterBiquad        biquad5;        //xy=294.8888854980469,233.88888549804688
+AudioFilterBiquad        biquad16;       //xy=294.1481628417969,700.1481323242188
+AudioFilterBiquad        biquad6;        //xy=295.8888854980469,273.8888854980469
+AudioFilterBiquad        biquad23;       //xy=293.1481246948242,988.1481828689575
+AudioMixer4              mixer6;         //xy=468.1481628417969,963.148120880127
+AudioMixer4              mixer8;         //xy=469.20630264282227,1207.936580657959
+AudioMixer4              mixer10;        //xy=470.63491600110626,1439.3650952091928
+AudioMixer4              mixer9;         //xy=472.06348037719727,1330.7936344146729
+AudioMixer4              mixer7;         //xy=474.9206085205078,1089.2064628601074
+AudioMixer4              mixer4;         //xy=478.1481628417969,691.4814605712891
+AudioMixer4              mixer1;         //xy=484.55554962158203,154.6666717529297
+AudioMixer4              mixer3;         //xy=483.7460403442383,490.7142791748047
+AudioMixer4              mixer5;         //xy=483.14817810058594,801.0052604675293
+AudioMixer4              mixer2;         //xy=494.8888854980469,303.6666679382324
+AudioMixer4              mixer11;        //xy=712.0635223388672,395.5555648803711
+AudioMixer4              mixer13;        //xy=727.7777709960938,1351.5872478485107
+AudioMixer4              mixer12;        //xy=734.9206275939941,1024.2857055664062
+AudioMixer4              mixer14;        //xy=924.6349182128906,818.7619228363037
+AudioMixer4              mixer15;        //xy=1128.1480884552002,801.6667137145996
+AudioOutputI2S           i2s2;           //xy=1176.8414611816406,819.6031703948975
+AudioPlaySdWav           playSdWav1;     //xy=925.1112213134766,743.9444847106934
+AudioConnection          patchCord1(i2s1, 0, biquad1, 0);
+AudioConnection          patchCord2(i2s1, 0, biquad2, 0);
+AudioConnection          patchCord3(i2s1, 0, biquad3, 0);
+AudioConnection          patchCord4(i2s1, 0, biquad4, 0);
+AudioConnection          patchCord5(i2s1, 0, biquad5, 0);
+AudioConnection          patchCord6(i2s1, 0, biquad6, 0);
+AudioConnection          patchCord7(i2s1, 0, biquad7, 0);
+AudioConnection          patchCord8(i2s1, 0, biquad8, 0);
+AudioConnection          patchCord9(i2s1, 0, biquad9, 0);
+AudioConnection          patchCord10(i2s1, 0, biquad10, 0);
+AudioConnection          patchCord11(i2s1, 0, biquad11, 0);
+AudioConnection          patchCord12(i2s1, 0, biquad12, 0);
+AudioConnection          patchCord13(i2s1, 0, biquad13, 0);
+AudioConnection          patchCord14(i2s1, 0, biquad14, 0);
+AudioConnection          patchCord15(i2s1, 0, biquad15, 0);
+AudioConnection          patchCord16(i2s1, 0, biquad16, 0);
+AudioConnection          patchCord17(i2s1, 0, biquad17, 0);
+AudioConnection          patchCord18(i2s1, 0, biquad18, 0);
+AudioConnection          patchCord19(i2s1, 0, biquad19, 0);
+AudioConnection          patchCord20(i2s1, 1, biquad20, 0);
+AudioConnection          patchCord21(i2s1, 1, biquad21, 0);
+AudioConnection          patchCord22(i2s1, 1, biquad22, 0);
+AudioConnection          patchCord23(i2s1, 1, biquad23, 0);
+AudioConnection          patchCord24(i2s1, 1, biquad24, 0);
+AudioConnection          patchCord25(biquad2, 0, mixer1, 1);
+AudioConnection          patchCord26(biquad1, 0, mixer1, 0);
+AudioConnection          patchCord27(biquad20, 0, mixer5, 3);
+AudioConnection          patchCord28(biquad3, 0, mixer1, 2);
+AudioConnection          patchCord29(biquad9, 0, mixer3, 0);
+AudioConnection          patchCord30(biquad32, 0, mixer8, 3);
+AudioConnection          patchCord31(biquad33, 0, mixer9, 0);
+AudioConnection          patchCord32(biquad28, 0, mixer7, 3);
+AudioConnection          patchCord33(biquad4, 0, mixer1, 3);
+AudioConnection          patchCord34(biquad29, 0, mixer8, 0);
+AudioConnection          patchCord35(biquad17, 0, mixer5, 0);
+AudioConnection          patchCord36(biquad21, 0, mixer6, 0);
+AudioConnection          patchCord37(biquad31, 0, mixer8, 2);
+AudioConnection          patchCord38(biquad18, 0, mixer5, 1);
+AudioConnection          patchCord39(biquad34, 0, mixer9, 1);
+AudioConnection          patchCord40(biquad36, 0, mixer9, 3);
+AudioConnection          patchCord41(biquad25, 0, mixer7, 0);
+AudioConnection          patchCord42(biquad37, 0, mixer10, 0);
+AudioConnection          patchCord43(biquad27, 0, mixer7, 2);
+AudioConnection          patchCord44(biquad38, 0, mixer10, 1);
+AudioConnection          patchCord45(biquad30, 0, mixer8, 1);
+AudioConnection          patchCord46(biquad22, 0, mixer6, 1);
+AudioConnection          patchCord47(biquad10, 0, mixer3, 1);
+AudioConnection          patchCord48(biquad35, 0, mixer9, 2);
+AudioConnection          patchCord49(biquad8, 0, mixer2, 3);
+AudioConnection          patchCord50(biquad26, 0, mixer7, 1);
+AudioConnection          patchCord51(biquad14, 0, mixer4, 1);
+AudioConnection          patchCord52(biquad19, 0, mixer5, 2);
+AudioConnection          patchCord53(biquad15, 0, mixer4, 2);
+AudioConnection          patchCord54(biquad13, 0, mixer4, 0);
+AudioConnection          patchCord55(biquad12, 0, mixer3, 3);
+AudioConnection          patchCord56(biquad7, 0, mixer2, 2);
+AudioConnection          patchCord57(biquad24, 0, mixer6, 3);
+AudioConnection          patchCord58(biquad11, 0, mixer3, 2);
+AudioConnection          patchCord59(biquad5, 0, mixer2, 0);
+AudioConnection          patchCord60(biquad16, 0, mixer4, 3);
+AudioConnection          patchCord61(biquad6, 0, mixer2, 1);
+AudioConnection          patchCord62(biquad23, 0, mixer6, 2);
+AudioConnection          patchCord63(mixer6, 0, mixer12, 1);
+AudioConnection          patchCord64(mixer8, 0, mixer12, 3);
+AudioConnection          patchCord65(mixer10, 0, mixer13, 1);
+AudioConnection          patchCord66(mixer9, 0, mixer13, 0);
+AudioConnection          patchCord67(mixer7, 0, mixer12, 2);
+AudioConnection          patchCord68(mixer4, 0, mixer11, 3);
+AudioConnection          patchCord69(mixer1, 0, mixer11, 0);
+AudioConnection          patchCord70(mixer3, 0, mixer11, 2);
+AudioConnection          patchCord71(mixer5, 0, mixer12, 0);
+AudioConnection          patchCord72(mixer2, 0, mixer11, 1);
+AudioConnection          patchCord73(mixer11, 0, mixer14, 0);
+AudioConnection          patchCord74(mixer13, 0, mixer14, 2);
+AudioConnection          patchCord75(mixer12, 0, mixer14, 1);
+AudioConnection          patchCord76(mixer14, 0, mixer15, 0);
+AudioConnection          patchCord92(playSdWav1, 0, mixer15, 2);
+AudioConnection          patchCord93(playSdWav1, 1, mixer15, 1);
+AudioConnection          patchCord77(mixer15, 0, i2s2, 1);
+AudioConnection          patchCord78(mixer15, 0, i2s2, 0);
+AudioControlSGTL5000     sgtl5000_1;     //xy=1006.7935943603516,380.50794410705566
+// GUItool: end automatically generated code
+
+const int myInput = AUDIO_INPUT_LINEIN;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(yesButton, INPUT);
+  pinMode(noButton, INPUT);
+  pinMode(ledPin, OUTPUT);
+
+
+  // Audio connections require memory to work.  For more
+  // detailed information, see the MemoryAndCpuUsage example
+  sgtl5000_1.enable();
+  
+  sgtl5000_1.volume(0.5);
+  AudioMemory(150);
+  SPI.setMOSI(7);
+  SPI.setSCK(14);
+  if (!(SD.begin(10))){
+
+    while (1) {
+      Serial.println("Unable to access the SD card");
+      delay(500);
+    }
+
+  }
+  
+  ////////////////
+  calibration();//
+  ////////////////
+  delay(1000);
+  digitalWrite(ledPin, LOW);
+  int yesButtonState=digitalRead(yesButton);
+  int noButtonState=digitalRead(noButton);
+  numberOfTests=0;
+  //////////////////////////////////////////////////////////////////////////////////
+  while(numberOfTests<4){  
+
+    digitalWrite(ledPin, LOW);
+    int i=0;
+    int j=0;
+  
+    char* soundFiles[14][9]={
+      {"1250L.wav", "12510L.wav", "12520L.wav", "12530L.wav", "12540L.wav", "12550L.wav", "12560L.wav", "12570L.wav", " "},
+      {"2500L.wav", "25010L.wav", "25020L.wav", "25030L.wav", "25040L.wav", "25050L.wav", "25060L.wav", "25070L.wav", "25080L.wav"},
+      {"5000L.wav", "50010L.wav", "50020L.wav", "50030L.wav", "50040L.wav", "50050L.wav", "50060L.wav", "50070L.wav", "50080L.wav"},
+      {"10000L.wav", "100010L.wav", "100020L.wav", "100030L.wav", "100040L.wav", "100050L.wav", "100060L.wav", "100070L.wav", "100080L.wav"},
+      {"20000L.wav", "200010L.wav", "200020L.wav", "200030L.wav", "200040L.wav", "200050L.wav", "200060L.wav", "200070L.wav", "200080L.wav"},
+      {"40000L.wav", "400010L.wav", "400020L.wav", "400030L.wav", "400040L.wav", "400050L.wav", "400060L.wav", "400070L.wav", "400080L.wav"},
+      {"80000L.wav", "800010L.wav", "800020L.wav", "800030L.wav", "800040L.wav", "800050L.wav", "800060L.wav", "800070L.wav", "800080L.wav"},
+      {"1250R.wav", "12510R.wav", "12520R.wav", "12530R.wav", "12540R.wav", "12550R.wav", "12560R.wav", "12570R.wav", " "},
+      {"2500R.wav", "25010R.wav", "25020R.wav", "25030R.wav", "25040R.wav", "25050R.wav", "25060R.wav", "25070R.wav", "25080R.wav"},
+      {"5000R.wav", "50010R.wav", "50020R.wav", "50030R.wav", "50040R.wav", "50050R.wav", "50060R.wav", "50070R.wav", "50080R.wav"},
+      {"10000R.wav", "100010R.wav", "100020R.wav", "100030R.wav", "100040R.wav", "100050R.wav", "100060R.wav", "100070R.wav", "100080R.wav"},
+      {"20000R.wav", "200010R.wav", "200020R.wav", "200030R.wav", "200040R.wav", "200050R.wav", "200060R.wav", "200070R.wav", "200080R.wav"},
+      {"40000R.wav", "400010R.wav", "400020R.wav", "400030R.wav", "400040R.wav", "400050R.wav", "400060R.wav", "400070R.wav", "400080R.wav"},
+      {"80000R.wav", "800010R.wav", "800020R.wav", "800030R.wav", "800040R.wav", "800050R.wav", "800060R.wav", "800070R.wav", "800080R.wav"},
+    };
+
+    while(i<=13){
+      digitalWrite(ledPin, LOW);
+      yesButtonState=digitalRead(yesButton);
+      noButtonState=digitalRead(noButton);
+      j=0;
+      while(j<=8){
+        digitalWrite(ledPin, LOW);
+        if(i==0 && j==8){
+          digitalWrite(ledPin, HIGH);
+          originalResultsLeft[numberOfTests][0]=70;
+          i++;
+          j=0;
+        };
+        
+        if(i==7 && j==8){
+          digitalWrite(ledPin, HIGH);
+          i++;
+          j=0;
+          originalResultsRight[numberOfTests][0]=70;
+        };
+    
+        yesButtonState=digitalRead(yesButton);
+        noButtonState=digitalRead(noButton);
+
+        playFile(soundFiles[i][j]);
+        Serial.print(i);
+        Serial.print(" ");
+        Serial.print(j);
+
+        Serial.print("\n");
+    //////////////////////////////////////////////////////////////////////
+        if(yesButtonState==0 && noButtonState==1){
+          digitalWrite(ledPin, HIGH);//able to hear
+          delay(1000);
+          //Results being recorded//
+          if(i<=6){
+            originalResultsLeft[numberOfTests][i]=10*(j);
+          }
+          
+          else{
+            originalResultsRight[numberOfTests][i-7]=10*(j);
+          };
+          j=0;
+          i++;
+        };
+////////////////////////////////////////////////////////////////////////
+        if(yesButtonState==1 && noButtonState==0){//unable to hear
+          digitalWrite(ledPin, HIGH);
+          delay(1000);
+          j++;
+        };
+////////////////////////////////////////////////////////////////////////
+
+        if(yesButtonState==0 && noButtonState==0){//both buttons clicked
+          digitalWrite(ledPin, HIGH);
+          delay(1000);
+          i = 14;
+          j = 9;
+        };
+////////////////////////////////////////////////////////////////////////
+        if(j==9){
+          digitalWrite(ledPin, HIGH);
+          //Results being recorded//
+          if(i<=5){
+            originalResultsLeft[numberOfTests][i]=80;
+          }
+          else{
+            originalResultsRight[numberOfTests][i-7]=80;
+          }
+          i++;
+          j=0;
+        };
+
+        if(i>=14){
+          j=9;
+        };
+    //    delay(100);
+      };
+    };
+    numberOfTests=numberOfTests+1;
+    Serial.print(numberOfTests);
+  };
+
+  delay(5000);
+  for (int i = 0; i < 7; ++i){
+    leftResultsFinal[i]=(0)+(originalResultsLeft[0][i]+originalResultsLeft[1][i]+
+    originalResultsLeft[2][i]+originalResultsLeft[3][i])/4;
+
+    //leftResultsFinal[i]=leftResultsFinal[i]-(leftResultsFinal[i]%10);
+
+
+    rightResultsFinal[i]=(0)+(originalResultsRight[0][i]+originalResultsRight[1][i]+
+    originalResultsRight[2][i]+originalResultsRight[3][i])/4;
+    
+    //rightResultsFinal[i]=rightResultsFinal[i]-(rightResultsFinal[i]%10)
+  };
+
+
+
+//Outputs left side results to the user
+  Serial.print("Left side results: ");
+  for (int i = 0; i < 7; ++i){
+    Serial.print(leftResultsFinal[i]);
+    Serial.print(", ");
+  }
+  //Stores the values of the results to pass on to loop()
+  result125L = leftResultsFinal[0];
+  result250L = leftResultsFinal[1];
+  result500L = leftResultsFinal[2];
+  result1000L = leftResultsFinal[3];
+  result2000L = leftResultsFinal[4];
+  result4000L = leftResultsFinal[5];
+  result8000L = leftResultsFinal[6];
+  Serial.print("\n");
+
+
+  //Outputs right side results to the user
+  Serial.print("Right side results: ");
+  for (int i = 0; i < 7; ++i){
+    Serial.print(rightResultsFinal[i]);
+    Serial.print(", ");
+  }
+  //Stores the values of the results to pass on to loop()
+  result125R = rightResultsFinal[0];
+  result250R = rightResultsFinal[1];
+  result500R = rightResultsFinal[2];
+  result1000R = rightResultsFinal[3];
+  result2000R = rightResultsFinal[4];
+  result4000R = rightResultsFinal[5];
+  result8000R = rightResultsFinal[6];
+  Serial.print("\n");
+  Serial.print("\n");
+
+  
+  Serial.print("TEST COMPLETE");
+  Serial.print("\n");  
+  
+  
+  
+  //format
+  //biqaud.setBandpass(stage, center frequency, center frequency/bandwidth)
+  biquad1.setBandpass(0, 125, 10);
+  biquad2.setBandpass(0, 157.5, 4);
+  biquad3.setBandpass(0, 198.4, 8);
+  biquad4.setBandpass(0, 250, 4);
+ 
+  biquad5.setBandpass(0, 315, 8); 
+  biquad6.setBandpass(0, 396.9, 4);
+  biquad7.setBandpass(0, 500, 6);
+  biquad8.setBandpass(0, 630, 3);
+  
+  biquad9.setBandpass(0, 793.7, 3);
+  biquad10.setBandpass(0, 1000, 4.5);
+  biquad11.setBandpass(0, 1259.9, 2);
+  biquad12.setBandpass(0, 1587.4, 3);
+
+  biquad13.setBandpass(0, 2000, 3);
+  biquad14.setBandpass(0, 2519.8, 2);
+  biquad15.setBandpass(0, 3174.8, 2);
+  biquad16.setBandpass(0, 4000, 2);
+
+  biquad17.setBandpass(0, 5039.7, 2);
+  biquad18.setBandpass(0, 6349.6, 2);
+  biquad19.setBandpass(0, 8000, 2);
+  
+  /////////////////////////////////////////////////////////////////////
+  biquad20.setBandpass(0, 125, 10);
+  
+  biquad21.setBandpass(0, 157.5, 4);
+  biquad22.setBandpass(0, 198.4, 8);
+  biquad23.setBandpass(0, 250, 4);
+  biquad24.setBandpass(0, 315, 8); 
+  
+  biquad25.setBandpass(0, 396.9, 4);
+  biquad26.setBandpass(0, 500, 6);
+  biquad27.setBandpass(0, 630, 3);
+  biquad28.setBandpass(0, 793.7, 3);
+  
+  biquad29.setBandpass(0, 1000, 4.5);
+  biquad30.setBandpass(0, 1259.9, 2);
+  biquad31.setBandpass(0, 1587.4, 3);
+  biquad32.setBandpass(0, 2000, 3);
+  
+  biquad33.setBandpass(0, 2519.8, 2);
+  biquad34.setBandpass(0, 3174.8, 2);
+  biquad35.setBandpass(0, 4000, 2);
+  biquad36.setBandpass(0, 5039.7, 2);
+  
+  biquad37.setBandpass(0, 6349.6, 2);
+  biquad38.setBandpass(0, 8000, 2);
+  
+}
+
+unsigned long last_time = millis();
+
+void loop(){
+  sgtl5000_1.inputSelect(myInput);
+  if (millis() - last_time >= 2500) {
+    Serial.print("Proc = ");
+    Serial.print(AudioProcessorUsage());
+    Serial.print(" (");    
+    Serial.print(AudioProcessorUsageMax());
+    Serial.print("),  Mem = ");
+    Serial.print(AudioMemoryUsage());
+    Serial.print(" (");    
+    Serial.print(AudioMemoryUsageMax());
+    Serial.println(")");
+    last_time = millis();
+  }
+
+  //mixGain(int dB1, int dB2, double BW, double point)
+  mixer1.gain(0,mixGain(0, result125L, 125, 125));
+  mixer1.gain(1,mixGain(result125L, result250L, 125, 32.5));
+  mixer1.gain(2,mixGain(result125L, result250L, 125, 73.4));
+  mixer1.gain(3,mixGain(0, result250L, 125, 125)); //transition point
+
+  mixer2.gain(0,mixGain(result250L, result500L, 250, (315-250)));
+  mixer2.gain(1,mixGain(result250L, result500L, 250, (396.9-250)));
+  mixer2.gain(2,mixGain(result250L, result500L, 500, 500));
+  mixer2.gain(3,mixGain(result500L, result1000L, 500, (630-500)));
+
+  mixer3.gain(0,mixGain(result500L, result1000L, 500, (793.7-500)));
+  mixer3.gain(1,mixGain(result500L, result1000L, 1000, 1000));
+  mixer3.gain(2,mixGain(result1000L, result2000L, 1000, (1259.9-1000)));
+  mixer3.gain(3,mixGain(result1000L, result2000L, 1000, (1587.4-1000)));
+
+  mixer4.gain(0,mixGain(result1000L, result2000L, 1000, (2000-1000)));
+  mixer4.gain(1,mixGain(result2000L, result4000L, 2000, (2519.8-2000)));
+  mixer4.gain(2,mixGain(result2000L, result4000L, 2000, (3174.8-2000)));
+  mixer4.gain(3,mixGain(result2000L, result4000L, 2000, (4000-2000)));
+
+  mixer5.gain(0,mixGain(result4000L, result8000L, 4000, (5039.7-4000)));
+  mixer5.gain(1,mixGain(result4000L, result8000L, 4000, (6349.6-4000)));
+  mixer5.gain(2,mixGain(result4000L, result8000L, 4000, (8000-4000)));
+  
+  //////////////////////////////////////////////////////////////////////
+  mixer5.gain(3,mixGain(0, result125R, 125, 125));
+  
+  mixer6.gain(0,mixGain(result125L, result250L, 125, 32.5));
+  mixer6.gain(1,mixGain(result125L, result250L, 125, 73.4));
+  mixer6.gain(2,mixGain(0, result250L, 125, 125));
+  mixer6.gain(3,mixGain(result250L, result500L, 250, (315-250)));
+
+  mixer7.gain(0,mixGain(result250L, result500L, 250, (396.9-250)));
+  mixer7.gain(1,mixGain(result250L, result500L, 500, 500));
+  mixer7.gain(2,mixGain(result500L, result1000L, 500, (630-500)));
+  mixer7.gain(3,mixGain(result500L, result1000L, 500, (793.7-500)));
+
+  mixer8.gain(0,mixGain(result500L, result1000L, 1000, 1000));
+  mixer8.gain(1,mixGain(result1000L, result2000L, 1000, (1259.9-1000)));
+  mixer8.gain(2,mixGain(result1000L, result2000L, 1000, (1587.4-1000)));
+  mixer8.gain(3,mixGain(result1000L, result2000L, 1000, (2000-1000)));
+
+  mixer9.gain(0,mixGain(result2000L, result4000L, 2000, (2519.8-2000)));
+  mixer9.gain(1,mixGain(result2000L, result4000L, 2000, (3174.8-2000)));
+  mixer9.gain(2,mixGain(result2000L, result4000L, 2000, (4000-2000)));
+  mixer9.gain(3,mixGain(result4000L, result8000L, 4000, (5039.7-4000)));
+
+  mixer10.gain(0,mixGain(result4000L, result8000L, 4000, (6349.6-4000)));
+  mixer10.gain(1,mixGain(result4000L, result8000L, 4000, (8000-4000)));
+}
+
+double mixGain(int dB1, int dB2, double BW, double point){
+  double mix = ((point*(dB2-dB1))/BW)+dB1;
+  mix=0.4637*pow(2.71828, mix*0.1277);
+  Serial.println(mix);
+  return mix;
+  delay(2000);
+}
+
+void calibration(){
+  int yesButtonState=digitalRead(yesButton);
+  int noButtonState=digitalRead(noButton);
+  
+  while(yesButtonState==1 && noButtonState==1){
+    yesButtonState=digitalRead(yesButton);
+    noButtonState=digitalRead(noButton);
+  
+    Serial.print("Calibrating...");
+    Serial.print("\n");
+    
+    sgtl5000_1.volume(.9);
+    playFile("1234.WAV");
+    delay(1000);
+  };
+  Serial.print("\n");
+  Serial.print("Calibration complete.");
+  digitalWrite(ledPin, HIGH);
+}
+
+void playFile(char* filename)
+{
+  Serial.print("Playing file: ");
+  Serial.println(filename);
+
+  // Start playing the file.  This sketch continues to
+  // run while the file plays.
+  playSdWav1.play(filename);
+
+  // A brief delay for the library read WAV info
+  delay(5);
+
+  // Simply wait for the file to finish playing.
+  while (playSdWav1.isPlaying()) {
+    float vol = analogRead(1);
+    vol = vol / 1024;
+    sgtl5000_1.volume(vol);
+  }
+}
